@@ -1,9 +1,9 @@
-#Golang best practices
+# Golang best practices
 
-##About
+## About
 here is my opinion about golang sofware development best practices
 
-##Файловая структура приложения
+## Файловая структура приложения
 ```
 .
 ├── cmd
