@@ -3,6 +3,11 @@
 ## About
 here is my opinion about golang sofware development best practices
 
+## Sources
+* [Effective Go](https://golang.org/doc/effective_go.html)
+* [Code Review](https://go.dev/wiki/CodeReviewComments)
+* [Practical Go](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html)
+
 ## Application's filesystem
 ```
 .
@@ -55,36 +60,33 @@ golangci-lint run
 ```
 
 ## Dependencies
-* Use [modules](https://blog.golang.org/using-go-modules) as dependency system.
 * Use [athens](https://github.com/gomods/athens) as a proxy.
 
 ## Error handling
 * **Never panic**
 * Application should use it's **own** errors
 * You should use dependencies' errors **only** in place the dependency is called
-* Application errors should be described as package errors
-* Better go-way is put errors into the structure which implements an **Error** interface. So you make errors more informative.
+* Use `fmt.Errorf()` to create errors.
+* Create custom errors. Create struct and implement **Error** interface for it. It will make errors more informative.
 
 ## Structures
 * Avoid initialize structure directly. You should create an **NewStructName** constructor to create new variable for **StructName**.
-* Avoid making public fields in structure. Fields should be private, you need to write  **getters/setters** accessors to receive/store it's values.
+* Apply [Options pattern](https://golang.cafe/blog/golang-functional-options-pattern) if possible.
 
 ## Interfaces instead of structures
 * Interfaces can be used to hide the implementation behind an interface, advantages are:
   1. You may **change** the certain implementation without changing client's sources.
   2. You may write mock-based **unittests**, for example using [mockery](https://github.com/vektra/mockery)
-* You need to pay a lot of **attention** to choose functions/methods interfaces/signatures and return values.
+* Follow [code review](https://go.dev/wiki/CodeReviewComments#interfaces) recommendations.
 
 ## Logging
-* Recommend to start with [logrus](https://github.com/sirupsen/logrus)
-* Any logger should implement log levels (behind an interface) as follow:
-  * Trace
+* Use structured logging.
+* Logger should implement following log levels:
   * Debug
   * Info
   * Warn
   * Error
   * Crit/Fatal
-  * and their *Level*f implementations for formatted output, optional
 * Additional requirements:
   * WithField/s - to log context data in separate fields, outside of log message
   * WithError - is a shortcut for `WithField("error", err)`
